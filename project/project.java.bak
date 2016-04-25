@@ -1,0 +1,289 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.sql.*;
+
+class Project extends JFrame implements ActionListener
+{
+ImageIcon i1;
+JLabel l1,l2,l3;
+JPasswordField t1;
+JButton jb1,jb2,jb3;
+int count=0;
+Project(String str)
+	{
+	super(str);
+	Container con=getContentPane();
+	con.setLayout(null);
+	con.setBackground(Color.white);
+	i1=new ImageIcon("Sample1.png");
+	l1=new JLabel("",i1,JLabel.LEFT);
+	l2=new JLabel("ENTER YOUR PIN NUMBER :");
+	l3=new JLabel("FOR ADMINISTRATOR LOGIN");
+	t1=new JPasswordField();
+	jb1=new JButton("SUBMIT");
+	jb2=new JButton("EXIT");
+	jb3=new JButton("PRESS HERE");
+	l1.setBounds(190,20,450,40);
+	l2.setBounds(210,80,170,20);
+	l3.setBounds(460,240,170,30);
+	t1.setBounds(375,80,130,20);
+	jb1.setBounds(275,120,80,20);
+	jb2.setBounds(370,120,80,20);
+	jb3.setBounds(480,275,120,20);
+	con.add(l1);
+	con.add(l2);
+	con.add(l3);
+	con.add(t1);
+	con.add(jb1);
+	con.add(jb2);
+	con.add(jb3);
+	jb1.addActionListener(this);
+	jb2.addActionListener(this);
+	jb3.addActionListener(this);
+	}
+
+public void actionPerformed(ActionEvent ae)
+	{
+	if(ae.getActionCommand().equals("SUBMIT"))
+		{
+		if(t1.getText().equals("123456789"))
+			{
+				JOptionPane.showMessageDialog(this,"PROCESSING YOUR REQUEST.\nCLICK OK.");
+				setVisible(false);
+				User u=new User("SMART SOFT 1.3");
+				u.setSize(700,400);
+				u.setLocation(300,200);
+				u.setResizable(false);
+				u.setVisible(true);
+			}
+		else if(t1.getText().equals(""))
+			{
+			JOptionPane.showMessageDialog(this,"ERROR :\nYou left it empty.");
+			}
+		else
+			{
+			JOptionPane.showMessageDialog(this,"Invalid PIN number.\nTry Again.");
+			t1.setText("");
+			}
+		count++;
+		if(count == 3)
+			{
+				JOptionPane.showMessageDialog(this,"YOUR MINIMUM NUMBER OF TRIES EXCEEDED.\nCONTACT ADMINISTRATOR FOR FURTHER DETAILS.");
+				System.exit(0);
+			}
+		}
+	else if(ae.getActionCommand().equals("EXIT"))
+		{
+			JOptionPane.showMessageDialog(this,"CLOSING.\nCLICK OK.");
+			System.exit(0);
+		}
+	else if(ae.getActionCommand().equals("PRESS HERE"))
+		{
+			JOptionPane.showMessageDialog(this,"PROCESSING YOUR REQUEST.\nCLICK OK.");
+			setVisible(false);
+			Admin a=new Admin("SMART SOFT 1.3");
+			a.setSize(700,400);
+			a.setLocation(300,200);
+			a.setResizable(false);
+			a.setVisible(true);
+		}
+	}
+}
+
+class User extends JFrame implements ActionListener
+{
+JLabel l1,l2,l3,l4,l5;
+JTextField t1;
+JButton jb1,jb2;
+int count=0;
+User(String s)
+	{
+	super(s);
+	Container con=getContentPane();
+	con.setLayout(null);
+	l1=new JLabel("ENTER YOUR DESIRED OPTION HERE.");
+	l2=new JLabel("1. CREDITS.");
+	l3=new JLabel("2. YOUR ACCOUNT DETAILS.");
+	l4=new JLabel("3. DEBITS.");
+	l5=new JLabel("LIST OF OPTIONS YOU WANT TO VIEW.");
+	t1=new JTextField();
+	jb1=new JButton("SUBMIT");
+	jb2=new JButton("EXIT");
+	l1.setBounds(170,200,300,30);
+	l2.setBounds(230,80,170,30);
+	l3.setBounds(230,110,200,30);
+	l4.setBounds(230,140,170,30);
+	l5.setBounds(230,40,300,30);
+	t1.setBounds(400,205,130,20);
+	jb1.setBounds(265,235,80,20);
+	jb2.setBounds(355,235,80,20);
+	con.add(l1);
+	con.add(l2);
+	con.add(l3);
+	con.add(l4);
+	con.add(l5);
+	con.add(t1);
+	con.add(jb1);
+	con.add(jb2);
+	jb1.addActionListener(this);
+	jb2.addActionListener(this);
+	}
+public void actionPerformed(ActionEvent ae)
+	{
+	if(ae.getActionCommand().equals("SUBMIT"))
+		{
+		if(t1.getText().equals("1"))
+			{
+			JOptionPane.showMessageDialog(this,"REDIRECTING....\nPress OK");
+			try
+				{
+					Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+					Connection con=DriverManager.getConnection("jdbc:odbc:CREDITS");
+					Statement st=con.createStatement();
+					String str="select Credentials from Credits";
+					ResultSet rs=st.executeQuery(str);
+					int rows=0;
+					while(rs.next())
+						{
+						rows++;
+						}
+					int cred[]=new int[rows];
+					rs=st.executeQuery(str);
+//					st.executeUpdate("insert into Credits values(9,228,'water')");
+					for(int i=1;i<=rows;i++)
+						{
+						rs.next();
+						cred[i-1]=Integer.parseInt(rs.getString(1));
+						}
+					int credit=0;
+					for(int i=0;i<rows;i++)
+						{
+						credit=credit+cred[i];
+						}
+					JOptionPane.showMessageDialog(this,"Your Present Credits are "+credit+"\nPRESS OK.");
+					st.close();
+					con.close();
+					t1.setText("");
+				}
+			catch (Exception e)
+				{
+					System.out.println("Error--->\n."+e);
+				}
+			}
+		else if(t1.getText().equals("2"))
+			{
+			JOptionPane.showMessageDialog(this,"You Account Section.");
+			}
+		else if(t1.getText().equals("3"))
+			{
+			JOptionPane.showMessageDialog(this,"You Debits section.");
+			}
+		else
+			{
+			JOptionPane.showMessageDialog(this,"Invalid Selection.\nTry Again.");
+			t1.setText("");
+			}
+		count++;
+		if(count == 3)
+			{
+				JOptionPane.showMessageDialog(this,"YOUR MINIMUM NUMBER OF TRIES EXCEEDED.\nYour I.d. is blocked.\nTry again after 2 days.");
+				System.exit(0);
+			}
+		}
+	else if(ae.getActionCommand().equals("EXIT"))
+		{
+		JOptionPane.showMessageDialog(this,"You are exiting.\nLogin again when required.\nCLICK OK.");
+		System.exit(0);
+		}
+	}
+}
+
+class Admin extends JFrame implements ActionListener
+{
+JLabel l1,l2,l3;
+JTextField t1;
+JPasswordField t2;
+JButton jb1,jb2;
+int count=0;
+Admin(String s)
+	{
+	super(s);
+	Container con=getContentPane();
+	con.setLayout(null);
+	l1=new JLabel("WELCOME ADMIN.");
+	l2=new JLabel("Admin I.D. ");
+	l3=new JLabel("Password.");
+	t1=new JTextField();
+	t2=new JPasswordField();
+	jb1=new JButton("SUBMIT");
+	jb2=new JButton("BACK");
+	l1.setBounds(290,30,300,50);
+	l2.setBounds(230,80,100,30);
+	l3.setBounds(230,110,100,30);
+	t1.setBounds(340,85,140,20);
+	t2.setBounds(340,115,140,20);
+	jb1.setBounds(255,155,80,20);
+	jb2.setBounds(355,155,80,20);
+	con.add(l1);
+	con.add(l2);
+	con.add(l3);
+	con.add(t1);
+	con.add(t2);
+	con.add(jb1);
+	con.add(jb2);
+	jb1.addActionListener(this);
+	jb2.addActionListener(this);
+	}
+public void actionPerformed(ActionEvent ae)
+	{
+	if(ae.getActionCommand().equals("SUBMIT"))
+		{
+		if(t1.getText().equals("160110737055") && t2.getText().equals("10032"))
+			{
+				JOptionPane.showMessageDialog(this,"LOGIN SUCCESSFUL.\nCLICK OK.");
+				setVisible(false);
+			}
+		else if(t1.getText().equals("") || t2.getText().equals(""))
+			{
+			JOptionPane.showMessageDialog(this,"ERROR :\nYou left your I.d. or password empty.");
+			t1.setText("");
+			t2.setText("");
+			}
+		else
+			{
+			JOptionPane.showMessageDialog(this,"Invalid I.d. and Password.\nTry Again.");
+			t1.setText("");
+			t2.setText("");
+			}
+		count++;
+		if(count == 3)
+			{
+				JOptionPane.showMessageDialog(this,"YOUR MINIMUM NUMBER OF TRIES EXCEEDED.\nYour I.d. is blocked.\nTry again after 2 days.");
+				System.exit(0);
+			}
+		}
+	else if(ae.getActionCommand().equals("BACK"))
+		{
+		JOptionPane.showMessageDialog(this,"Initial Screen will be displayed.\nCLICK OK.");
+		setVisible(false);
+		Project p=new Project("SMART SOFT 1.3");
+		p.setSize(700,400);
+		p.setLocation(300,200);
+		p.setResizable(false);
+		p.setVisible(true);
+		}
+	}
+}
+
+class MainClass
+{
+public static void main(String args[])
+	{
+	Project p=new Project("SMART SOFT 1.3");
+	p.setSize(700,400);
+	p.setLocation(300,200);
+	p.setResizable(false);
+	p.setVisible(true);
+	}
+}

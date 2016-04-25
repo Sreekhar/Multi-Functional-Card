@@ -1,0 +1,27 @@
+ACCOUNT NUMBER:12,0
+PIN NUMBER:5,0
+ACCOUNT HOLDER NAME:20
+ACCOUNT BALANCE:10,2
+ACCOUNT CREDITS:10,2
+LAST TRANSACTION ON BALANCE:yyyy-mm-dd
+LAST TRANSACTION ON CREDITS:yyyy-mm-dd
+PHONE NUMBER:12,0
+PETROL POINTS:5
+SHOPPING POINTS:5
+
+
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| acc_num   | decimal(12,0) | YES  |     | NULL    |       |
+| pin_num   | decimal(5,0)  | YES  |     | NULL    |       |
+| acc_name  | varchar(20)   | YES  |     | NULL    |       |
+| acc_bal   | decimal(10,2) | YES  |     | NULL    |       |
+| cred_pay  | decimal(10,2) | YES  |     | NULL    |       |
+| last_bal  | date          | YES  |     | NULL    |       |
+| last_cred | date          | YES  |     | NULL    |       |
+| phone_num | decimal(12,0) | YES  |     | NULL    |       |
+| petro_pts | decimal(5,0)  | YES  |     | NULL    |       |
+| shop_pts  | decimal(5,0)  | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+
